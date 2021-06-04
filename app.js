@@ -14,7 +14,9 @@ const passport = require('passport')
 require("./config/passport")(passport)
 
 // DB Config
-const db = require("./config/keys").MongoURI
+// const db = require("./config/keys").MongoURI
+const db = process.env.MongoURI.
+
 
 // Middleware
 app.use(expressLayouts)
