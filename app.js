@@ -12,13 +12,13 @@ const passport = require('passport')
 
 
 // Passport config
-// require("./config/passport")(passport)
+require("./config/passport")(passport)
 
 // DB Config (Development)
-const db = require("./config/keys").MongoURI
+// const db = require("./config/keys").MongoURI
 
 // DB Config (Production)
-// const db = process.env.MongoURI
+const db = process.env.MongoURI
 
 
 // Middleware
