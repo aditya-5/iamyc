@@ -56,13 +56,11 @@ mongoose.connect(db, { useUnifiedTopology: true , useNewUrlParser: true })
   console.log(err)
 })
 
-
 //Routes
 app.use('/', require('./routes/index'))
 app.use('/users', require('./routes/users'))
 app.use('/dashboard', require('./routes/dashboard'))
 app.use('/buy', require('./routes/buy'))
-
 
 // ******************
 // Paypal V1 integration
