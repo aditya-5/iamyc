@@ -3,6 +3,12 @@ const router = express.Router();
 const User = require("../models/User")
 const bcrypt = require("bcryptjs")
 const passport = require('passport')
+const request = require('request');
+const bodyParser = require('body-parser')
+
+// Middleware
+router.use(bodyParser.urlencoded({extended: false}))
+router.use(bodyParser.json())
 
 
 router.get("/login", (req, res)=>{
@@ -19,7 +25,7 @@ router.post("/register", (req, res)=>{
   let errors = []
 
   if(!email || !name || !password || !password2){
-    errors.push({msg : "Please push in all fields"})
+    errors.push({msg : "Please fill in all fields"})
   }
 
   if(password != password2){
@@ -86,11 +92,45 @@ router.post("/register", (req, res)=>{
 
 // User login POST
 router.post("/login", (req, res, next)=>{
-  passport.authenticate('local', {
-    successRedirect : '/dashboard',
-    failureRedirect : '/users/login',
-    failureFlash : true
-  })(req, res, next)
+
+  // Without captcha Login
+  // passport.authenticate('local', {
+  //   successRedirect : '/dashboard',
+  //   failureRedirect : '/users/login',
+  //   failureFlash : true
+  // })(req, res, next)
+
+
+
+  if(
+    req.body.captcha === undefined ||
+    req.body.captcha === '' ||
+    req.body.captcha === null
+  ){
+    return res.json({"success": false, "msg":"wrong captcha"})
+  }
+
+  const secretKey = process.env.MongoURI || require("../config/keys").captchaSECRET;
+  const verifyUrl = `https://www.google.com/recaptcha/api/siteverify?secret=
+  ${secretKey}&response=${req.body.captcha}
+    &remoteip=${req.connection.remoteAddress}`
+
+  request(verifyUrl, (err, response, body)=>{
+    body = JSON.parse(body);
+
+    if(body.success !== undefined && !body.success){
+      return res.json({"success": false, "msg":"Failed captcha"})
+    }
+
+    passport.authenticate('local', {
+      successRedirect : '/dashboard',
+      failureRedirect : '/users/login',
+      failureFlash : true
+    })(req, res, next)
+
+
+  })
+
 })
 
 

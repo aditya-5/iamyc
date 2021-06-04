@@ -1,9 +1,13 @@
+
 <div class="row mt-5">
   <div class="col-md-6 m-auto">
     <div class="card card-body">
       <h1 class="text-center mb-3"><i class="fas fa-sign-in-alt"></i>  Login</h1>
       <%- include ("./partials/messages") %>
-      <form action="/users/login" method="POST">
+      <div id="display-error">
+
+      </div>
+      <form action="/users/login" method="POST" id="login-form">
         <div class="form-group">
           <label for="email">Email</label>
           <input
@@ -24,6 +28,10 @@
             placeholder="Enter Password"
           />
         </div>
+          <div id="captcha-preview">
+          </div>
+          <br>
+
         <button type="submit" class="btn btn-primary btn-block">Login</button>
       </form>
       <p class="lead mt-4">
@@ -35,3 +43,57 @@
     </div>
   </div>
 </div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explici"></script>
+<script>
+
+   var onloadCallback = function() {
+        widgetId2 = grecaptcha.render(document.getElementById('captcha-preview'), {
+         'sitekey' : '6Lf71QUbAAAAAFH6iSEudXkl5uPJjc9OW5FcMlCn'
+       });
+    };
+
+  document.getElementById("login-form").addEventListener('submit', submitForm)
+  
+  function submitForm(e){
+    e.preventDefault()
+    const email = $("#email").val()
+    const password = $("#password").val()
+    const captcha = $("#g-recaptcha-response").val()
+
+    fetch('/users/login', {
+      method:'POST',
+      headers:{
+        'Accept': 'application/json, text/plain, */*',
+        'Content-type': 'application/json'
+      },
+      body: JSON.stringify({email:email,password:password, captcha:captcha})
+    })
+    .then(response=>{
+
+      // Incase captcha is verified, the response redirects the user
+      if (response.redirected) {
+
+        // If the redirect is to the users/login, captcha is reloaded
+            if(response.url.includes(window.location.pathname)){
+              grecaptcha.reset(widgetId2)
+              $("#display-error").html('<div class="alert alert-danger alert-dismissible fade show" role="alert">Invalid Login Credentials<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>')
+            }else{
+
+              // If the redirect is /dashboard, the redirect is made
+              window.location.href = response.url;
+            }
+        }
+        else if(!response.redirected){
+          $("#display-error").html('<div class="alert alert-danger alert-dismissible fade show" role="alert">Missing captcha<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>')
+        }
+    })
+    .catch(function(err) {
+
+      // Incase the fetch() call fails
+        console.info(err + " url: " + url);
+    });
+
+
+  }
+</script>
