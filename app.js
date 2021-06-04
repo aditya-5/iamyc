@@ -9,6 +9,8 @@ var mongoose = require('mongoose')
 const flash = require('connect-flash')
 const session = require('express-session')
 const passport = require('passport')
+// const favicon = require('serve-favicon');
+// var path = require('path')
 
 
 // Passport config
@@ -19,6 +21,7 @@ const db = process.env.MongoURI || require("./config/keys").MongoURI
 
 
 // Middleware
+
 app.use(expressLayouts)
 app.set('view engine', 'ejs')
 app.use(expressSanitizer());
@@ -31,6 +34,9 @@ app.use(session({
   resave: false,
   saveUninitialized: true,
 }))
+// app.use(favicon(__dirname + '/public/favicon.ico'));
+// app.use(favicon(path.join(__dirname, '/public', 'favicon.ico')));
+
 
 // Passport Middleware
 app.use(passport.initialize());

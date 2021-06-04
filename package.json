@@ -29,6 +29,8 @@
     "multer-gridfs-storage": "^4.2.0",
     "passport": "^0.4.1",
     "passport-local": "^1.0.0",
-    "paypal-rest-sdk": "^1.8.1"
+    "path": "^0.12.7",
+    "paypal-rest-sdk": "^1.8.1",
+    "serve-favicon": "^2.5.0"
   }
 }
