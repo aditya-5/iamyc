@@ -1,0 +1,54 @@
+<div class="row mt-5">
+  <div class="col-md-6 m-auto">
+    <div class="card card-body">
+      <h1 class="text-center mb-3">
+        <i class="fas fa-user-plus"></i> Search Members
+      </h1>
+      <%- include ("../partials/messages") %>
+      <form action="/dashboard/search" method="POST">
+        <div class="form-group">
+          <label for="password">Membership Number</label>
+          <input
+            type="text"
+            id="memberno"
+            name="memberno"
+            class="form-control"
+            placeholder="Membership Number"
+            value="<%= typeof memberno != 'undefined' ? memberno : '' %>"
+          />
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-block">
+          Search
+        </button>
+      </form>
+      <p class="lead mt-4"> <a href="../dashboard">Back to dashboard</a></p>
+    </div>
+    <br>
+    <br>
+    <div class="container d-flex justify-content-center">
+      <% if (typeof member != 'undefined'){ %>
+
+        <div class="card" style="width: 22rem;">
+        <div class="card-body">
+          <h5 class="card-title"><%= member.name %></h5>
+          <h6 class="card-subtitle mb-2 text-muted">  <%= member.email %></h6>
+          <p class="card-text">Membership number: <%= member.memberno %> </p>
+          <img height=250 width=250 src="/<%= member.userImage %>" alt="">
+
+
+
+
+
+        </div>
+      </div>
+
+
+
+
+
+      <% } %>
+    </div>
+
+  </div>
+</div>

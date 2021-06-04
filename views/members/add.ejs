@@ -1,0 +1,85 @@
+<div class="row mt-5">
+  <div class="col-md-6 m-auto">
+    <div class="card card-body">
+      <h1 class="text-center mb-3">
+        <i class="fas fa-user-plus"></i> Add New Member
+      </h1>
+      <%- include ("../partials/messages") %>
+      <form action="/dashboard/add" method="POST" enctype="multipart/form-data">
+        <div class="form-group">
+          <label for="name">Name</label>
+          <input
+            type="name"
+            id="name"
+            name="name"
+            class="form-control"
+            placeholder="Enter Name"
+            value="<%= typeof name != 'undefined' ? name : '' %>"
+          />
+        </div>
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            class="form-control"
+            placeholder="Enter Email"
+            value="<%= typeof email != 'undefined' ? email : '' %>"
+          />
+        </div>
+        <div class="form-group">
+          <label for="password">Membership Number</label>
+          <input
+            type="text"
+            id="memberno"
+            name="memberno"
+            class="form-control"
+            placeholder="Membership Number"
+            value="<%= typeof memberno != 'undefined' ? memberno : '' %>"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label for="formFile" class="form-label">Choose display picture</label>
+          <input class="form-control" name="userImage"  type="file" id="input-files">
+        </div>
+
+          <br>
+          <div class="container d-flex justify-content-center">
+            <div class="preview-images"></div>
+          </div>
+         <br>
+
+
+        <button type="submit" class="btn btn-primary btn-block">
+          Add to database
+        </button>
+      </form>
+      <p class="lead mt-4"> <a href="../dashboard">Back to dashboard</a></p>
+    </div>
+  </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script>
+      $(document).ready(function() {
+        let imagesPreview = function(input, placeToInsertImagePreview) {
+          if (input.files) {
+            let filesAmount = input.files.length;
+            for (i = 0; i < filesAmount; i++) {
+              let reader = new FileReader();
+              reader.onload = function(event) {
+                $($.parseHTML("<img>"))
+                  .attr("src", event.target.result)
+                  .appendTo(placeToInsertImagePreview);
+              };
+              reader.readAsDataURL(input.files[i]);
+            }
+          }
+        };
+        $("#input-files").on("change", function() {
+          imagesPreview(this, "div.preview-images");
+        });
+      });
+    </script>
