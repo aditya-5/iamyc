@@ -23,8 +23,35 @@
     <div class="card card-body">
       <h1 class="text-center mb-3"><i class="fas fa-shopping-cart"></i>  Buy the IAMYC Membership</h1>
         <div class="container ">
-        <center><h2><i class="fas fa-pound-sign"></i> 5.00 only</h2></center><br>
+        <center><h2>Paypal : <i class="fas fa-pound-sign"></i> 5.50 (incl. TXN fees) </h2></center><br>
         <div id="paypal-button-container"></div>
+
+        <hr>
+        <center><h2>UK Bank Transfer : <i class="fas fa-pound-sign"></i> 5.00 </h2><br>
+        <button type="button" id="bankdeets" class="btn btn-primary">Show Bank Details</button>
+        <br><br>
+        <div id="bankdeets-preview">
+
+          <div class="card border-success mb-3" style="max-width: 18rem;">
+            <div class="card-header">Bank Details</div>
+            <div class="card-body text-success">
+              <h5 class="card-title">Account Number : xxxxxxxxx</h5>
+              <h5 class="card-title">Sort Code : xx-xx-xx</h5>
+              <h5 class="card-title">Beneficiary Name : Mr. XYZ</h5>
+              <p class="card-text" style="color: red">Please make a bank transfer of exactly £ 5 with a reference note mentioning your email and name. </p>
+              <p class="card-text" style="color: red">We will be in contact with you regarding your membership details within 24-48 hours. </p>
+              <p class="card-text" style="color: red">Please contact us at aditya.7@outlook.com for support. </p>
+            </div>
+          </div>
+
+        </div>
+
+
+
+
+
+        </center>
+
 
         </div>
       <center><p class="lead mt-4">
@@ -44,6 +71,9 @@
 
     <script src="https://www.paypal.com/sdk/js?client-id=ASQB9QZ8T0lOF39_NsXW0-zR3QJnMWg3_adyhIr9gGvnYmFSPiEDk2fchkWCr5vWIKyc9GkhdnBZTQRs&currency=GBP&merchant-id=J8TX9MG69T8MY"></script>
     <script>
+      $("#bankdeets-preview").hide();
+
+
         paypal.Buttons({
             // Call your server to set up the transaction
             createOrder: function(data, actions) {
@@ -84,14 +114,25 @@
                         if (errorDetail.description) msg += '\n\n' + errorDetail.description;
                         if (orderData.debug_id) msg += ' (' + orderData.debug_id + ')';
 
-                        $('#display-success').html('<div class="row mt-5"><div class="col-md-6 m-auto"><div class="card card-body"><h1 class="text-center mb-3"><font color="red"><i class="fas fa-times-circle"/></font> Payment failed.</h1><div class="container "><p>Please try again after some time or contact the developer at contact@adityagarwal.co</p><p>Incase of payment deduction, please contact us at contact@iamyc.com for refund</p></div></div></div></div>')
+                        $('#display-success').append('<div class="row mt-5"><div class="col-md-6 m-auto"><div class="card card-body"><h1 class="text-center mb-3"><font color="red"><i class="fas fa-times-circle"/></font> Payment failed.</h1><div class="container "><p>Please try again after some time or contact the developer at contact@adityagarwal.co</p><p>Incase of payment deduction, please contact us at contact@iamyc.com for refund</p></div></div></div></div>')
                         return alert(msg); // Show a failure message
                     }
 
                     // Show a success message
-                    $('#display-success').html('<div class="row mt-5"> <div class="col-md-6 m-auto"> <div class="card card-body"> <h1 class="text-center mb-3"><font color="blue"><i class="fas fa-check-circle"></i> </font>Payment Successful</h1> <div class="container "> <p>Thank you for purchasing the IAMYC membership. Please wait to hear back from us within 24-48 hours with your Membership Details.</p> Order details: <br> <table class="tg" border=1> <tbody> <tr> <td >Order Id</td> <td > '+ orderData.id+' </td> </tr> <tr> <td >Membership Email</td> <td > '+orderData.payer.email_address +' </td> </tr> <tr> <td >Buyer name</td> <td> '+ orderData.payer.name.given_name +' '+ orderData.payer.name.surname +' </td> </tr> <tr> <td >Address</td> <td> '+ orderData.purchase_units[0].shipping.address.address_line_1 + ', '+orderData.purchase_units[0].shipping.address.admin_area_2+ ', '+orderData.purchase_units[0].shipping.address.postal_code +' </td> </tr> <tr> <td >Amount Paid (incl. txn fees)</td> <td > '+ orderData.purchase_units[0].payments.captures[0].amount.currency_code + ' '+ orderData.purchase_units[0].payments.captures[0].amount.value +' </td> </tr> <tr> <td >Item Purchased</td> <td > '+ 'IAMYC Membership' +' </td> </tr> </tbody> </table> </div> <p class="lead mt-4"> Please keep a copy of the same for future reference. </p> </div> </div> </div>')
+                    $('#display-success').append('<div class="row mt-5"> <div class="col-md-6 m-auto"> <div class="card card-body"> <h1 class="text-center mb-3"><font color="blue"><i class="fas fa-check-circle"></i> </font>Payment Successful</h1> <div class="container "> <p>Thank you for purchasing the IAMYC membership. Please wait to hear back from us within 24-48 hours with your Membership Details.</p> Order details: <br> <table class="tg" border=1> <tbody> <tr> <td >Order Id</td> <td > '+ orderData.id+' </td> </tr> <tr> <td >Membership Email</td> <td > '+orderData.payer.email_address +' </td> </tr> <tr> <td >Buyer name</td> <td> '+ orderData.payer.name.given_name +' '+ orderData.payer.name.surname +' </td> </tr> <tr> <td >Address</td> <td> '+ orderData.purchase_units[0].shipping.address.address_line_1 + ', '+orderData.purchase_units[0].shipping.address.admin_area_2+ ', '+orderData.purchase_units[0].shipping.address.postal_code +' </td> </tr> <tr> <td >Amount Paid (incl. txn fees)</td> <td > '+ orderData.purchase_units[0].payments.captures[0].amount.currency_code + ' '+ orderData.purchase_units[0].payments.captures[0].amount.value +' </td> </tr> <tr> <td >Item Purchased</td> <td > '+ 'IAMYC Membership' +' </td> </tr> </tbody> </table> </div> <p class="lead mt-4"> Please keep a copy of the same for future reference. </p> </div> </div> </div>')
                 });
             }
 
         }).render('#paypal-button-container');
+
+
+        $("#bankdeets").click(()=>{
+          $("#bankdeets-preview").slideToggle('slow');
+          // $("#bankdeets-preview").html("");
+          // $("#bankdeets-preview").html('<div class="card border-success mb-3" style="max-width: 18rem;"><div class="card-header">Bank Details</div><div class="card-body text-success"><h5 class="card-title">Account Number : xxxxxxxxx</h5><h5 class="card-title">Sort Code : xx-xx-xx</h5><h5 class="card-title">Beneficiary Name : Mr. XYZ</h5><p class="card-text" style="color: red">Please make a bank transfer of exactly £ 5 with a reference note mentioning your email and name. </p><p class="card-text" style="color: red">We will be in contact with you regarding your membership details within 24-48 hours. </p><p class="card-text" style="color: red">Please contact us at aditya.7@outlook.com for support. </p></div></div>');
+
+        })
+
+
+
     </script>

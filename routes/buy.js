@@ -20,7 +20,7 @@ router.post('/payment', async function handleRequest(req, res) {
         purchase_units: [{
           amount: {
             currency_code: 'GBP',
-            value: '5.00'
+            value: '5.50'
           }
         }]
       });
