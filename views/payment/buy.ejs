@@ -1,0 +1,97 @@
+<!-- PAYPAL V1 CHECKOUT SYSTEM -->
+<!-- <div class="row mt-5">
+  <div class="col-md-6 m-auto">
+    <div class="card card-body">
+      <h1 class="text-center mb-3"><i class="fas fa-shopping-cart"></i>  Buy the IAMYC Membership</h1>
+        <div class="container ">
+        <h2><i class="fas fa-pound-sign"></i> 5.00 only</h2>
+        <form class="" action="/pay" method="post">
+          <button type="submit" class="btn btn-success">Pay <i class="fas fa-pound-sign"></i> 5 via Paypal </button>
+          <font color="blue" size=8><i style="vertical-align: bottom;" class="fab fa-paypal"></i></font>
+        </form>
+        </div>
+      <p class="lead mt-4">
+       <a href="../">  Back</a>
+      </p>
+    </div>
+  </div>
+</div> -->
+
+
+<div class="row mt-5">
+  <div class="col-md-6 m-auto">
+    <div class="card card-body">
+      <h1 class="text-center mb-3"><i class="fas fa-shopping-cart"></i>  Buy the IAMYC Membership</h1>
+        <div class="container ">
+        <center><h2><i class="fas fa-pound-sign"></i> 5.00 only</h2></center><br>
+        <div id="paypal-button-container"></div>
+
+        </div>
+      <center><p class="lead mt-4">
+       <a href="../">  Back</a>
+      </p></center>
+    </div>
+  </div>
+</div>
+
+
+<div id="display-success">
+
+</div>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <script src="https://www.paypal.com/sdk/js?client-id=ASQB9QZ8T0lOF39_NsXW0-zR3QJnMWg3_adyhIr9gGvnYmFSPiEDk2fchkWCr5vWIKyc9GkhdnBZTQRs&currency=GBP&merchant-id=J8TX9MG69T8MY"></script>
+    <script>
+        paypal.Buttons({
+            // Call your server to set up the transaction
+            createOrder: function(data, actions) {
+                return fetch('/buy/payment', {
+                    method: 'post'
+                }).then(function(res) {
+                    return res.json();
+                }).then(function(orderData) {
+                    return orderData.orderID;
+                });
+            },
+
+            // Call your server to finalize the transaction
+            onApprove: function(data, actions) {
+                return fetch('/buy/' + data.orderID + '/capture/', {
+                    method: 'post'
+                }).then(function(res) {
+                    return res.json();
+                }).then(function(orderData) {
+                  console.log(orderData)
+                  orderData = orderData.orderData
+                    // Three cases to handle:
+                    //   (1) Recoverable INSTRUMENT_DECLINED -> call actions.restart()
+                    //   (2) Other non-recoverable errors -> Show a failure message
+                    //   (3) Successful transaction -> Show confirmation or thank you
+
+                    // This example reads a v2/checkout/orders capture response, propagated from the server
+                    // You could use a different API or structure for your 'orderData'
+                    var errorDetail = Array.isArray(orderData.details) && orderData.details[0];
+
+                    if (errorDetail && errorDetail.issue === 'INSTRUMENT_DECLINED') {
+                        return actions.restart(); // Recoverable state, per:
+                        // https://developer.paypal.com/docs/checkout/integration-features/funding-failure/
+                    }
+
+                    if (errorDetail) {
+                        var msg = 'Sorry, your transaction could not be processed.';
+                        if (errorDetail.description) msg += '\n\n' + errorDetail.description;
+                        if (orderData.debug_id) msg += ' (' + orderData.debug_id + ')';
+
+                        $('#display-success').html('<div class="row mt-5"><div class="col-md-6 m-auto"><div class="card card-body"><h1 class="text-center mb-3"><font color="red"><i class="fas fa-times-circle"/></font> Payment failed.</h1><div class="container "><p>Please try again after some time or contact the developer at contact@adityagarwal.co</p><p>Incase of payment deduction, please contact us at contact@iamyc.com for refund</p></div></div></div></div>')
+                        return alert(msg); // Show a failure message
+                    }
+
+                    // Show a success message
+                    $('#display-success').html('<div class="row mt-5"> <div class="col-md-6 m-auto"> <div class="card card-body"> <h1 class="text-center mb-3"><font color="blue"><i class="fas fa-check-circle"></i> </font>Payment Successful</h1> <div class="container "> <p>Thank you for purchasing the IAMYC membership. Please wait to hear back from us within 24-48 hours with your Membership Details.</p> Order details: <br> <table class="tg" border=1> <tbody> <tr> <td >Order Id</td> <td > '+ orderData.id+' </td> </tr> <tr> <td >Membership Email</td> <td > '+orderData.payer.email_address +' </td> </tr> <tr> <td >Buyer name</td> <td> '+ orderData.payer.name.given_name +' '+ orderData.payer.name.surname +' </td> </tr> <tr> <td >Address</td> <td> '+ orderData.purchase_units[0].shipping.address.address_line_1 + ', '+orderData.purchase_units[0].shipping.address.admin_area_2+ ', '+orderData.purchase_units[0].shipping.address.postal_code +' </td> </tr> <tr> <td >Amount Paid (incl. txn fees)</td> <td > '+ orderData.purchase_units[0].payments.captures[0].amount.currency_code + ' '+ orderData.purchase_units[0].payments.captures[0].amount.value +' </td> </tr> <tr> <td >Item Purchased</td> <td > '+ 'IAMYC Membership' +' </td> </tr> </tbody> </table> </div> <p class="lead mt-4"> Please keep a copy of the same for future reference. </p> </div> </div> </div>')
+                });
+            }
+
+        }).render('#paypal-button-container');
+    </script>

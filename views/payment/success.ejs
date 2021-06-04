@@ -1,0 +1,52 @@
+<!-- <div class="row mt-5">
+  <div class="col-md-6 m-auto">
+    <div class="card card-body">
+      <h1 class="text-center mb-3"><font color="blue"><i class="fas fa-check-circle"></i> </font>Payment Successful</h1>
+        <div class="container ">
+        <p>Thank you for purchasing the IAMYC membership. Please wait to hear back from us within 24-48 hours with your Membership Details.</p>
+        Order details:
+        <br>
+
+        <table class="tg" border=1>
+          <tbody>
+
+        <tr>
+          <td class="tg-0lax">Order Id</td>
+          <td class="tg-0lax"><%= payment.id %></td>
+        </tr>
+        <tr>
+          <td class="tg-0lax"><span style="background-color:transparent">Membership Email</span></td>
+          <td class="tg-0lax"><%= payment.payer.payer_info.email %></td>
+        </tr>
+        <tr>
+          <td class="tg-0lax"><span style="background-color:transparent">Buyer name</span></td>
+          <td class="tg-0lax"><%= payment.payer.payer_info.first_name+payment.payer.payer_info.last_name %></td>
+        </tr>
+        <tr>
+          <td class="tg-0lax"><span style="background-color:transparent">Address</span></td>
+          <td class="tg-0lax"><%= payment.payer.payer_info.shipping_address.line1+ ", " +payment.payer.payer_info.shipping_address.city+ ", " +payment.payer.payer_info.shipping_address.postal_code %></td>
+        </tr>
+        <tr>
+          <td class="tg-0lax"><span style="background-color:transparent">Amount Paid (incl. txn fees)</span></td>
+          <td class="tg-0lax"><%= payment.transactions[0].amount.currency +" " + payment.transactions[0].amount.total %></td>
+        </tr>
+        <tr>
+          <td class="tg-0lax"><span style="font-weight:400;font-style:normal">Item Purchased</span></td>
+          <td class="tg-0lax"><%= payment.transactions[0].description %></td>
+        </tr>
+        </tbody>
+        </table>
+
+
+
+
+
+
+
+        </div>
+      <p class="lead mt-4">
+       <a href="../">  Back</a>
+      </p>
+    </div>
+  </div>
+</div> -->
