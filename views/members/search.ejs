@@ -1,4 +1,6 @@
-<script src='../scanner.js'></script>
+
+<!-- OLD SCAN QR IMPLEMENTATION -->
+<!-- <script src='../scanner.js'></script>
 
 <script>
     function tryIt () {
@@ -12,8 +14,26 @@
             onTimeout: function () { console.warn('TIMEDOUT'); },
         });
     }
-</script>
+</script> -->
 
+<script src="https://d10ka0m22z5ju5.cloudfront.net/js/evrythng/5.10.1/evrythng-5.10.1.js"></script>
+<script src="https://d10ka0m22z5ju5.cloudfront.net/js/scanthng/4.6.0/scanthng-4.6.0.js"></script>
+<script src="../jsQR.js"></script>
+<script>
+evrythng.setup({ apiUrl: 'https://api.evrythng.com' });
+evrythng.use(ScanThng);
+const APPLICATION_API_KEY = 'TxYHPYF89B0bUa7hrRgZYKhcsxVXBeOyV6dYAPjduiBgYaf7bcihBZxKbAcyqFNmuGdHj83tus3MqxxD';
+const app = new evrythng.Application(APPLICATION_API_KEY);
+function tryIt () {
+app.scanStream({
+  filter: { method: '2d', type: 'qr_code' },
+  containerId: 'stream_container',
+  interval: 300,
+})
+  .then(results=>document.getElementById("memberno").value = results[0].meta.value)
+  .catch(console.log);
+}
+</script>
 <div class="row mt-5">
   <div class="col-md-6 m-auto">
     <div class="card card-body">
@@ -23,7 +43,6 @@
       <%- include ("../partials/messages") %>
       <form action="/dashboard/search" method="POST">
         <div class="form-group">
-
           <br>
           <div class="input-group mb-3">
             <button class="btn btn-outline-info" value='Scan QR' onclick='tryIt()' type="button" id="button-addon1">Scan QR</button>
@@ -36,33 +55,24 @@
           Search
         </button>
       </form>
+
       <p class="lead mt-4"> <a href="../dashboard">Back to dashboard</a></p>
     </div>
     <br>
     <br>
     <div class="container d-flex justify-content-center">
       <% if (typeof member != 'undefined'){ %>
-
         <div class="card" style="width: 22rem;">
         <div class="card-body">
           <h5 class="card-title"><%= member.name %></h5>
           <h6 class="card-subtitle mb-2 text-muted">  <%= member.email %></h6>
           <p class="card-text">Membership number: <%= member.memberno %> </p>
           <img height=250 width=250 src="/<%= member.userImage %>" alt="">
-
-
-
-
-
         </div>
       </div>
-
-
-
-
-
       <% } %>
     </div>
-
   </div>
+  <br><br>
+  <div id="stream_container"></div>
 </div>
