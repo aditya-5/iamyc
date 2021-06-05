@@ -30,7 +30,7 @@
         <center><h2>UK Bank Transfer : <i class="fas fa-pound-sign"></i> 5.00 </h2><br>
         <button type="button" id="bankdeets" class="btn btn-primary">Show Bank Details</button>
         <br><br>
-        <div id="bankdeets-preview">
+        <div id="bankdeets-preview" style="display: none;">
 
           <div class="card border-success mb-3" style="max-width: 18rem;">
             <div class="card-header">Bank Details</div>
@@ -71,7 +71,6 @@
 
     <script src="https://www.paypal.com/sdk/js?client-id=ASQB9QZ8T0lOF39_NsXW0-zR3QJnMWg3_adyhIr9gGvnYmFSPiEDk2fchkWCr5vWIKyc9GkhdnBZTQRs&currency=GBP&merchant-id=J8TX9MG69T8MY"></script>
     <script>
-      $("#bankdeets-preview").hide();
 
 
         paypal.Buttons({
@@ -93,7 +92,6 @@
                 }).then(function(res) {
                     return res.json();
                 }).then(function(orderData) {
-                  console.log(orderData)
                   orderData = orderData.orderData
                     // Three cases to handle:
                     //   (1) Recoverable INSTRUMENT_DECLINED -> call actions.restart()
