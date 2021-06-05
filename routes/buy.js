@@ -68,7 +68,8 @@ router.post('/:id/capture/', async function handleRequest(req, res) {
   </table>
   <p>We will be in touch with you with your membership details within 24-48 hours.
   Looking forward to serving you with the best deals in town.  </p>
-
+  <font color="red"> <p>Important : Please reply to this email and send us a picture of yourself in which your face is distinctly visible.
+  This is intended for verification purposes for whenever you visit one of our partner restaurants.</p></font>
   <br>
   Regards
   <br>

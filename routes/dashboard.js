@@ -5,11 +5,13 @@ const {ensureAdminAuthenticated}= require('../config/admin_auth')
 const {ensureAuthenticated}= require('../config/auth')
 const multer = require('multer')
 const mongoose = require('mongoose')
-
+const sharp = require('sharp')
 const storage = multer.diskStorage({
-  destination: function(req, file, cb){
-    cb(null, './uploads/')
-  },
+
+  // Directly save the file instead of using sharp
+  // destination: function(req, file, cb){
+  //   cb(null, './uploads/')
+  // },
   filename: function(req, file, cb){
     cb(null, new Date().toISOString() + file.originalname)
   }
@@ -45,10 +47,14 @@ router.get('/all',ensureAdminAuthenticated, (req, res)=>{
 
 })
 
-router.post('/add', upload.single('userImage'), (req, res)=>{
+router.post('/add', upload.single('userImage'),  async (req, res)=>{
   const { name, email, memberno} = req.body
-  const userImage = req.file.path
-
+  // const userImage = req.file.path
+  const userImage = "uploads/"+req.file.filename
+  await sharp(req.file.path).resize({width:300, height:300})
+  .toFile(__dirname+"/../uploads/"+req.file.filename)
+  .then(data=>console.log(data))
+  .catch(err=>console.log(err))
 
   let errors = []
 
