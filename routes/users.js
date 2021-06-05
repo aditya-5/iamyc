@@ -110,7 +110,7 @@ router.post("/login", (req, res, next)=>{
     return res.json({"success": false, "msg":"wrong captcha"})
   }
 
-  const secretKey = process.env.MongoURI || require("../config/keys").captchaSECRET;
+  const secretKey = process.env.captchaSECRET || require("../config/keys").captchaSECRET;
   const verifyUrl = `https://www.google.com/recaptcha/api/siteverify?secret=
   ${secretKey}&response=${req.body.captcha}
     &remoteip=${req.connection.remoteAddress}`
