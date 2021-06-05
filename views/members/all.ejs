@@ -3,30 +3,27 @@
 <br>
 
 <% let i= 1 %>
-<div class="card-deck">
+<div class="row">
 <% members.forEach((member)=>{ %>
-
   <% if(i%4==0){ %>
     </div>
     <br>
-    <div class="card-deck">
+    <div class="row">
     <% } %>
-
-
-<div class="card" style="width: 10rem;">
+    <div class="col m-2">
+<div class="card" style="width: 100%;">
   <img class="card-img-top p-5" src="/<%= member.userImage %>">
   <div class="card-body">
-
     <h5 class="card-title"><%= member.name %></h5>
     <h6 class="card-subtitle mb-2 text-muted">  <%= member.email %></h6>
     <p class="card-text">Membership ID: <%= member.memberno %> </p>
     <form action="/dashboard/delete/<%= member.id %>" method="post">
-
         <button type="submit" name="button"><font color="red"><i class="fas fa-trash-alt"></i></font>
         </button>
 
     </form>
   </div>
+</div>
 </div>
 
 <% i++ %>

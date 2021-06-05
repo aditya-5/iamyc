@@ -64,10 +64,24 @@ app.scanStream({
       <% if (typeof member != 'undefined'){ %>
         <div class="card" style="width: 22rem;">
         <div class="card-body">
+
+
+          <center>
           <h5 class="card-title"><%= member.name %></h5>
           <h6 class="card-subtitle mb-2 text-muted">  <%= member.email %></h6>
           <p class="card-text">Membership number: <%= member.memberno %> </p>
-          <img height=250 width=250 src="/<%= member.userImage %>" alt="">
+          </center>
+          <br>
+          <div class="row ">
+            <div class="col">
+              <div class="container d-flex justify-content-center">
+                <img height=250 width=250 src="/<%= member.userImage %>" alt="">
+              </div>
+            </div>
+          </div>
+
+
+
         </div>
       </div>
       <% } %>
