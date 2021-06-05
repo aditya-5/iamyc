@@ -77,7 +77,7 @@
             if(response.url.includes(window.location.pathname)){
               grecaptcha.reset(widgetId2)
               $("#password").val("")
-              $("#display-error").html('<div class="alert alert-danger alert-dismissible fade show" role="alert">Invalid Login Credentials<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>')
+              $("#display-error").html('<div class="alert alert-danger alert-dismissible fade show" role="alert">Invalid/Missing Login Credentials<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>')
             }else{
               // If the redirect is /dashboard, the redirect is made
               window.location.href = response.url;
