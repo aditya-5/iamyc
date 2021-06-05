@@ -6,6 +6,9 @@ const {ensureAuthenticated}= require('../config/auth')
 const multer = require('multer')
 const mongoose = require('mongoose')
 const sharp = require('sharp')
+const fs = require('fs')
+
+
 const storage = multer.diskStorage({
 
   // Directly save the file instead of using sharp
@@ -158,6 +161,12 @@ router.post('/delete/:id',ensureAdminAuthenticated, (req, res)=>{
   console.log(mongoose.Types.ObjectId.isValid(id));
   Member.findByIdAndDelete(id)
   .then(data=>{
+    try {
+      fs.unlinkSync(data.userImage)
+    } catch (e) {
+      console.log(e)
+    }
+
     res.redirect('/dashboard/all')
   })
   .catch(err=> console.log(err))
